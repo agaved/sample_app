@@ -137,6 +137,7 @@ aside {
 }
 
 /* Forms */
+
 input, textarea, select, .uneditable-input {
 	border: 1px solid #bbb;
 	width: 100%;
@@ -158,6 +159,23 @@ input, textarea, select, .uneditable-input {
 	@extend .control-group;
 	@extend .error;
 }
+
+/* users index */
+
+.users {
+	list-style: none;
+	margin: o;
+	li {
+		overflow: auto;
+		padding: 10px 0;
+		border-top: 1px solid $grayLighter;
+		&:last-child {
+			border-bottom: 1px solid $grayLighter;
+		}
+	}
+}
+
+
 /* Miscellaneous */
 
 .debug_dump {
