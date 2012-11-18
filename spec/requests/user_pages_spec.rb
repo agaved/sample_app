@@ -90,7 +90,7 @@ describe "UserPages" do
 				expect { click_button submit }.to change(User, :count).by(1)
 			end
 			describe "after saving the user" do
-				before { click_button submit}
+				before { click_button submit }
 				let(:user) { User.find_by_email('user@example.com')}
 
 				it {should have_selector('title', text: user.name)}

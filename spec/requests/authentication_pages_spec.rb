@@ -68,6 +68,17 @@ describe "Authentication" do
 						page.should have_selector('title', text: 'Edit user')
 					end
 				end
+
+				describe "when signin in again" do
+					before do
+						delete signout_path
+						sign_in user
+					end
+
+					it "should render the default (profile) page" do
+						page.should have_selector('title', text: user.name)
+					end
+				end
 			end
 
 			describe "in the Users controller" do
@@ -114,6 +125,35 @@ describe "Authentication" do
 			describe "submitting a DELETE request to the Users#destroy action" do
 				before { delete user_path(user) }
 				specify { response.should redirect_to(root_path)}
+			end
+		end
+
+		describe "as admin user" do
+			let(:admin) { FactoryGirl.create(:admin) }
+
+			before {sign_in admin}
+
+			describe "deleting yourself" do
+				it "shouldn't be possible" do
+					expect { delete user_path(admin) }.to_not change(User, :count).by(-1) 
+				end
+			end
+		end
+
+		describe "as signed-in user" do
+			let(:user) { FactoryGirl.create(:user) }
+			before { sign_in user }
+
+			describe "should not be able to access the 'new' action" do
+				before { visit signup_path }
+
+				it { should_not have_selector('h1', text: 'Sign up') }
+			end
+
+			describe "should not be able to access the 'create' action" do
+				before { page.driver.post(signup_path, { :params => { :name => "Pippo" } }) }
+
+				it { should_not have_selector('h1', text: 'Sign up') }				 
 			end
 		end
 	end
